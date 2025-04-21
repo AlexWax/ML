@@ -9,11 +9,21 @@ from sklearn.metrics import precision_recall_curve, auc, roc_auc_score
 
 
 class ModelCompare:
+    """
+    Different models comparing with roc_auc and pr_auc metrics
+    """
     def __init__(self, X_data, y_data):
+        """
+        X - matrix of objects: [obj, feature]
+        y_true - true_value for x
+        """
         self.X_train, self.x_test, self.y_train, self.y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=42)
 
-    def auc_pr(self, model):
-
+    def auc_(self, model):
+        """
+        Metrics calculation
+        :param model: ML-model
+        """
         pipe = Pipeline([
           ('scaler', StandardScaler()),
           ('classifier', model)
@@ -27,8 +37,12 @@ class ModelCompare:
         roc_auc_model = roc_auc_score(self.y_test, score)
         return auc_pr_model, roc_auc_model
 
-    def predicts(self, models):
-        results = {str(model): self.auc_pr(model) for model in models}
+    def predicts(self, models: list) -> dict:
+        """
+        Results
+        :param models: list of ML-models
+        """
+        results = {str(model): self.auc_(model) for model in models}
         return results
 
 

@@ -6,7 +6,14 @@ from sklearn.decomposition import PCA
 np.random.seed(42)
 
 
-def pca_ideal_comp(X, y, components, model):
+def pca_ideal_comp(X: np.array, y: np.array, components: list, model):
+    """
+    Comparing of different parameters for PCA - metric
+    :param X: object matrix: [obj, features]
+    :param y: list of true values
+    :param components: list of different components for comparison
+    :param model: ML-model
+    """
     X_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
     acc = dict()
@@ -20,8 +27,8 @@ def pca_ideal_comp(X, y, components, model):
         X_tr = pca.fit_transform(X_train)
         x_ts = pca.transform(x_test)
 
-        lr.fit(X_tr, y_train)
-        predict = lr.predict(x_ts)
+        model.fit(X_tr, y_train)
+        predict = model.predict(x_ts)
         acc[elem] = accuracy_score(predict, y_test)
 
     return max(acc.items(), key= lambda x: x[1])
